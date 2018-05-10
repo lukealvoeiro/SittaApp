@@ -116,6 +116,7 @@ tools:context=".RegisterActivity">
             android:layout_height="wrap_content"
             android:hint="Phone Number"
             android:textSize="16dp"
+            android:inputType="number"
             android:paddingHorizontal="15dp"
             android:paddingVertical="12dp"
             android:textColor="#1e1e1e"
