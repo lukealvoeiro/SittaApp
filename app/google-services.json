@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "970329434772",
+    "firebase_url": "https://babysitterapp-5737c.firebaseio.com",
+    "project_id": "babysitterapp-5737c",
+    "storage_bucket": "babysitterapp-5737c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970329434772:android:aa903e69c4cc5135",
+        "android_client_info": {
+          "package_name": "mil.android.babysitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970329434772-6nk7c26jsmsd2ndeqg7oqk4kqg598qn0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mil.android.babysitter",
+            "certificate_hash": "56aff073b7c8407f406d5d4a5b4b795272abf4b9"
+          }
+        },
+        {
+          "client_id": "970329434772-sjid038pqtri9n9rgus6i8clp8usnhnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7u6Ni606TstZZ5V0K2RBb02nB1GnRlN0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970329434772-sjid038pqtri9n9rgus6i8clp8usnhnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

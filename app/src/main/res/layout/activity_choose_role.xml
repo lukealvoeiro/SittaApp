@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#efefef"
+tools:context=".ChooseRoleActivity">
+
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Select your role:"
+    android:textSize="20dp"
+    android:textColor="#3b3b3b"
+    android:layout_centerHorizontal="true"
+    android:layout_above="@id/options" />
+
+<LinearLayout
+    android:id="@+id/options"
+    android:layout_centerInParent="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginVertical="20dp">
+
+    <RelativeLayout
+        android:id="@+id/parentSelector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:background="@drawable/surround_card_selector"
+        android:layout_marginHorizontal="10dp">
+
+        <TextView
+            android:id="@+id/parentTxt"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Parent"
+            android:textSize="22dp"/>
+
+        <ImageView
+            android:layout_below="@+id/parentTxt"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/house"/>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/babysitterSelector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:background="@drawable/surround_card_selector"
+        android:layout_marginHorizontal="10dp">
+
+        <TextView
+            android:id="@+id/babysitterTxt"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Babysitter"
+            android:textSize="22dp"/>
+
+        <ImageView
+            android:layout_below="@+id/babysitterTxt"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/stroller"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+</RelativeLayout>

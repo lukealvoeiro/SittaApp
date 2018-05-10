@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AttachPictureActivity"
+    android:background="#efefef">
+
+
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+    <RelativeLayout
+            android:layout_width="240dp"
+            android:layout_height="240dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/blankuser"/>
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:background="@drawable/lower_transparency_entryfield"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="12dp"
+                android:paddingHorizontal="6dp"
+                android:text="Click here to change image"
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvFinish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="30dp"
+            android:text="Finish"
+            android:textSize="21dp"
+            android:textColor="#ffffff"
+            android:layout_marginTop="19dp"
+            android:layout_marginHorizontal="120dp"
+            android:textAlignment="center"
+            android:background="@drawable/gradient_button_shape"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
