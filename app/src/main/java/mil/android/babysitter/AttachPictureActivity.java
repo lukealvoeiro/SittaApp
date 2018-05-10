@@ -108,12 +108,12 @@ public class AttachPictureActivity extends AppCompatActivity {
 
                     final String userId = fbUser.getUid();
 
-                    String key = FirebaseDatabase.getInstance().getReference().child("user").push().getKey();
+                    //String key = FirebaseDatabase.getInstance().getReference().child("user").push().getKey();
                     User newUser = new User(userId, name, email, phoneNumber, babysitter);
 
                     newUser.setImageUrl(imageUrl);
 
-                    FirebaseDatabase.getInstance().getReference().child("user").child(key).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance().getReference().child("user").child(userId).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Intent intent = new Intent(AttachPictureActivity.this, LoginActivity.class);
