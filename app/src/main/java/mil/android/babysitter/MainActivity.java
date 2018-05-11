@@ -3,17 +3,19 @@ package mil.android.babysitter;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
+import java.util.Iterator;
 import java.util.List;
 
 import mil.android.babysitter.adapter.CardViewAdapter;
@@ -24,19 +26,25 @@ public class MainActivity extends AppCompatActivity {
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
 
-    private User user;
+    private User currUser;
     private CardViewAdapter cardViewAdapter;
 
     private List<User> listUsers;
+
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        mAuth = FirebaseAuth.getInstance();
 
-        mSwipeView = (SwipePlaceHolderView)findViewById(R.id.swipeView);
+        mSwipeView = (SwipePlaceHolderView) findViewById(R.id.swipeView);
         mContext = getApplicationContext();
 
         mSwipeView.getBuilder()
@@ -62,63 +70,60 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final String uId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        database.getReference().child("user").child(uId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                user = dataSnapshot.getValue(User.class);
+        populateListUsers();
+    }
 
-                database.getReference().child("user").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        User currUser = dataSnapshot.getValue(User.class);
-                        if(user != currUser){
-                            if(user.isBabysitter() != currUser.isBabysitter()){
-                                listUsers.add(currUser);
-                                Log.d("TAG_USER_ADDED_TO_LIST", "onChildAdded: "+currUser.getUid());
+
+    public void populateListUsers() {
+
+        FirebaseUser currFirebaseUser = mAuth.getCurrentUser();
+        DatabaseReference currUserReference = databaseReference.child(currFirebaseUser.getUid());
+
+        currUserReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currUser = dataSnapshot.getValue(User.class);
+
+
+                databaseReference.child("users").addValueEventListener(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
+                                listUsers.clear();
+
+
+                                while (items.hasNext()) {
+                                    DataSnapshot item = items.next();
+
+                                    String uid, name, email, phoneNumber;
+                                    Boolean babysitter;
+                                    uid = item.child("uid").getValue().toString();
+                                    name = item.child("name").getValue().toString();
+                                    email = item.child("email").getValue().toString();
+                                    phoneNumber = item.child("phoneNumber").getValue().toString();
+                                    babysitter = (Boolean) item.child("babysitter").getValue();
+                                    User user = new User(uid, name, email, phoneNumber, babysitter);
+
+                                    if (currUser.getUid() != uid && babysitter != currUser.isBabysitter()) {
+                                        listUsers.add(user);
+                                    }
+                                }
+                                databaseReference.child("users").removeEventListener(this);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
                             }
                         }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                );
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
     }
 }
