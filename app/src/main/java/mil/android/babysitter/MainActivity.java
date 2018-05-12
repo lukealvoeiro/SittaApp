@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("Populating", "We must get here");
 
+        listUsers = new ArrayList<User>();
         mAuth = FirebaseAuth.getInstance();
 
         uidCurr = mAuth.getCurrentUser().getUid();
@@ -79,16 +82,21 @@ public class MainActivity extends AppCompatActivity {
         //Log.d("Size of list:", Integer.toString(listUsers.size()));
     }
 
-    public void populateListUsers(){
+    public void populateListUsers() {
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("user");
 
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User userToAdd = dataSnapshot.getValue(User.class);
+
+                Log.d("User-properties", userToAdd.getEmail());
+                Log.d("User-properties", String.valueOf(userToAdd.isBabysitter()));
+                Log.d("User-properties", "");
+
                 if(!userFound) {
-                    if (!currUser.getUid().equals(uidCurr)) {
+                    if (!userToAdd.getUid().equals(uidCurr)) {
                         listUsers.add(userToAdd);
                         mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                     } else {
@@ -129,4 +137,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                Log.d("Populating", "How do we get here");
+//                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+//                    User userToAdd = childSnapshot.getValue(User.class);
+//
+//                    Log.d("Populating", "But not get here lol");
+//
+//                    if(!userFound) {
+//                        Log.d("Populating", "We enter the first if statement");
+//                        if (!currUser.getUid().equals(uidCurr)) {
+//                            Log.d("Populating", "We enter the if-statement within the if-statement");
+//                            listUsers.add(userToAdd);
+//                            mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
+//                        } else {
+//                            Log.d("Populating", "We enter the else-statement within the if-statement");
+//                            currUser = userToAdd;
+//                            userFound = true;
+//                        }
+//                    } else {
+//                        Log.d("Populating", "We enter the else-statement");
+//                        if (!currUser.getUid().equals(uidCurr)) {
+//                            Log.d("Populating", "We enter the first if-statement within the else-statement");
+//                            if(currUser.isBabysitter() != userToAdd.isBabysitter()){
+//                                Log.d("Populating", "We enter the the second if-statement within the else-statement");
+//                                listUsers.add(userToAdd);
+//                                mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
+//                            }
+//                        }else {
+//                            currUser = userToAdd;
+//                        }
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }
