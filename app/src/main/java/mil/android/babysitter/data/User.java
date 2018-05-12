@@ -8,6 +8,7 @@ public class User {
     private String bio;
     private String imageUrl;
     private String phoneNumber;
+    //private String location;
     private boolean babysitter;
 
     public User(){ }
