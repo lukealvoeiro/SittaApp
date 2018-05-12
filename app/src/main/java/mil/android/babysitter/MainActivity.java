@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 mSwipeView.doSwipe(true);
             }
         });
-
-        //Log.d("Size of list:", Integer.toString(listUsers.size()));
     }
 
     public void populateListUsers() {
@@ -95,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("User-properties", String.valueOf(userToAdd.isBabysitter()));
                 Log.d("User-properties", "");
 
-                if(!userFound) {
+                if (!userFound) {
                     if (!userToAdd.getUid().equals(uidCurr)) {
                         listUsers.add(userToAdd);
                         mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     if (!currUser.getUid().equals(uidCurr)) {
-                        if(currUser.isBabysitter() != userToAdd.isBabysitter()){
+                        if (currUser.isBabysitter() != userToAdd.isBabysitter()) {
                             listUsers.add(userToAdd);
                             mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                         }
@@ -137,51 +135,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                Log.d("Populating", "How do we get here");
-//                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-//                    User userToAdd = childSnapshot.getValue(User.class);
-//
-//                    Log.d("Populating", "But not get here lol");
-//
-//                    if(!userFound) {
-//                        Log.d("Populating", "We enter the first if statement");
-//                        if (!currUser.getUid().equals(uidCurr)) {
-//                            Log.d("Populating", "We enter the if-statement within the if-statement");
-//                            listUsers.add(userToAdd);
-//                            mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
-//                        } else {
-//                            Log.d("Populating", "We enter the else-statement within the if-statement");
-//                            currUser = userToAdd;
-//                            userFound = true;
-//                        }
-//                    } else {
-//                        Log.d("Populating", "We enter the else-statement");
-//                        if (!currUser.getUid().equals(uidCurr)) {
-//                            Log.d("Populating", "We enter the first if-statement within the else-statement");
-//                            if(currUser.isBabysitter() != userToAdd.isBabysitter()){
-//                                Log.d("Populating", "We enter the the second if-statement within the else-statement");
-//                                listUsers.add(userToAdd);
-//                                mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
-//                            }
-//                        }else {
-//                            currUser = userToAdd;
-//                        }
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 }
