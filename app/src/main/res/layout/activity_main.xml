@@ -16,11 +16,11 @@
         android:layout_alignParentLeft="true"
         android:layout_margin="9dp"/>
 
-    <ImageView
-        android:id="@+id/ivMatches"
+    <ImageButton
+        android:id="@+id/matchesBtn"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/people"
+        android:background="@drawable/people_button"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_margin="9dp"/>
@@ -35,13 +35,13 @@
             android:id="@+id/rejectBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/ic_cancel"/>
+            android:background="@drawable/cancel_button"/>
         <ImageButton
             android:id="@+id/acceptBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/ic_check"/>
+            android:background="@drawable/check_button" />
     </LinearLayout>
 
     <com.mindorks.placeholderview.SwipePlaceHolderView

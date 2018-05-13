@@ -1,6 +1,7 @@
 package mil.android.babysitter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import mil.android.babysitter.adapter.CardViewAdapter;
+import mil.android.babysitter.adapter.UserAdapter;
 import mil.android.babysitter.data.User;
 import mil.android.babysitter.view.TinderCard;
 
@@ -30,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
 
-    private User currUser;
+    public static User CURR_USER;
 
     private List<User> listUsers;
+    private UserAdapter userAdapter;
 
     private String uidCurr;
     private boolean userFound;
@@ -64,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
                         .setSwipeInMsgLayoutId(R.layout.tinder_swipe_in_msg_view)
                         .setSwipeOutMsgLayoutId(R.layout.tinder_swipe_out_msg_view));
 
+
+        findViewById(R.id.matchesBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AcceptedUsersActivity.class);
+                MainActivity.this.startActivity(intent);
+            }
+        });
 
         findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,17 +109,17 @@ public class MainActivity extends AppCompatActivity {
                         listUsers.add(userToAdd);
                         mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                     } else {
-                        currUser = userToAdd;
+                        CURR_USER = userToAdd;
                         userFound = true;
                     }
                 } else {
-                    if (!currUser.getUid().equals(uidCurr)) {
-                        if (currUser.isBabysitter() != userToAdd.isBabysitter()) {
+                    if (!CURR_USER.getUid().equals(uidCurr)) {
+                        if (CURR_USER.isBabysitter() != userToAdd.isBabysitter()) {
                             listUsers.add(userToAdd);
                             mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                         }
                     } else {
-                        currUser = userToAdd;
+                        CURR_USER = userToAdd;
                     }
                 }
 

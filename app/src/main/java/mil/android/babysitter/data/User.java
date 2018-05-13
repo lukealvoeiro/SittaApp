@@ -1,6 +1,10 @@
 package mil.android.babysitter.data;
 
-public class User {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class User implements Serializable {
 
     private String uid;
     private String name;
@@ -10,6 +14,8 @@ public class User {
     private String phoneNumber;
     //private String location;
     private boolean babysitter;
+    private List<User> rejectedUsers;
+    private List<User> acceptedUsers;
 
     public User(){ }
 
@@ -19,6 +25,8 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.babysitter = babysitter;
+        this.acceptedUsers = new ArrayList<User>();
+        this.rejectedUsers = new ArrayList<User>();
     }
 
     public String getUid() {
@@ -76,5 +84,34 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public List<User> getRejectedUsers() {
+        return rejectedUsers;
+    }
+
+    public void setRejectedUsers(List<User> rejectedUsers) {
+        this.rejectedUsers = rejectedUsers;
+    }
+
+    public List<User> getAcceptedUsers() {
+        return acceptedUsers;
+    }
+
+    public void setAcceptedUsers(List<User> acceptedUsers) {
+        this.acceptedUsers = acceptedUsers;
+    }
+
+    public void addAcceptedUser(User user) {
+        this.acceptedUsers.add(user);
+    }
+
+    public void addRejectedUser(User user) {
+        this.rejectedUsers.add(user);
+    }
+
+    public void removeAcceptedUser(User user) {
+        this.acceptedUsers.remove(user);
+    }
+
 }
 
