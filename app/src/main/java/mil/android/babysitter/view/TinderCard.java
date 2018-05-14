@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
@@ -36,6 +38,7 @@ public class TinderCard {
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
 
+
     public TinderCard(Context context, User profile, SwipePlaceHolderView swipeView) {
         mContext = context;
         mProfile = profile;
@@ -49,12 +52,15 @@ public class TinderCard {
     }
 
     @SwipeOut
-    private String onSwipedOut(){
+    private void onSwipedOut(){
+        Log.d("REJECTED", MainActivity.CURR_USER.getUid());
         Log.d("REJECTED", mProfile.getName());
         //mSwipeView.addView(this);
-        MainActivity.CURR_USER.addRejectedUser(mProfile);
 
-        return mProfile.getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        ref.child("user").child(MainActivity.CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(false);
+
     }
 
     @SwipeCancelState
@@ -65,9 +71,6 @@ public class TinderCard {
     @SwipeIn
     private void onSwipeIn(){
         Log.d("ACCEPTED", mProfile.getName());
-        List<User> accepted = mProfile.getRejectedUsers();
-        accepted.add(mProfile);
-        MainActivity.CURR_USER.setAcceptedUsers(accepted);
     }
 
     @SwipeInState

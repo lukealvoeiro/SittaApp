@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import butterknife.BindView;
 import mil.android.babysitter.adapter.CardViewAdapter;
 import mil.android.babysitter.adapter.UserAdapter;
 import mil.android.babysitter.data.User;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean userFound;
 
     private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +96,43 @@ public class MainActivity extends AppCompatActivity {
 
     public void populateListUsers() {
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("user");
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("user");
 
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User userToAdd = dataSnapshot.getValue(User.class);
+                final User userToAdd = dataSnapshot.getValue(User.class);
+
+                final DatabaseReference innerRef = ref.child(userToAdd.getUid()).child("match");
+                innerRef.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        String key = dataSnapshot.getKey();
+                        boolean val = (boolean) dataSnapshot.getValue();
+                        userToAdd.addMatchedUsers(key, val);
+                        Log.d("HALP", "addMatchedUsers: " + key);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 Log.d("User-properties", userToAdd.getEmail());
                 Log.d("User-properties", String.valueOf(userToAdd.isBabysitter()));
@@ -110,19 +144,13 @@ public class MainActivity extends AppCompatActivity {
                         mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                     } else {
                         CURR_USER = userToAdd;
+                        Log.d("REJECTED", "onChildAdded: " + CURR_USER.getName());
                         userFound = true;
                     }
                 } else {
-                    if (!CURR_USER.getUid().equals(uidCurr)) {
-                        if (CURR_USER.isBabysitter() != userToAdd.isBabysitter()) {
-                            listUsers.add(userToAdd);
-                            mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
-                        }
-                    } else {
-                        CURR_USER = userToAdd;
-                    }
+                    listUsers.add(userToAdd);
+                    mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                 }
-
             }
 
             @Override
@@ -146,4 +174,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

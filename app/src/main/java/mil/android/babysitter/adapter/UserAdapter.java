@@ -107,7 +107,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         final User userToDelete = usersList.get(position);
         usersList.remove(userToDelete);
         notifyItemRemoved(position);
-        MainActivity.CURR_USER.removeAcceptedUser(userToDelete);
+        //MainActivity.CURR_USER.removeAcceptedUser(userToDelete);
     }
 
     @Override

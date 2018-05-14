@@ -2,6 +2,7 @@ package mil.android.babysitter.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class User implements Serializable {
@@ -12,12 +13,9 @@ public class User implements Serializable {
     private String bio;
     private String imageUrl;
     private String phoneNumber;
-    //private String location;
     private boolean babysitter;
-    private List<User> rejectedUsers;
-    private List<User> acceptedUsers;
+    private HashMap<String, Boolean> matchedUsers;
 
-    public User(){ }
 
     public User(String uid, String name, String email, String phoneNumber, boolean babysitter) {
         this.uid = uid;
@@ -25,8 +23,7 @@ public class User implements Serializable {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.babysitter = babysitter;
-        this.acceptedUsers = new ArrayList<User>();
-        this.rejectedUsers = new ArrayList<User>();
+        this.matchedUsers = new HashMap<String, Boolean>();
     }
 
     public String getUid() {
@@ -85,33 +82,14 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<User> getRejectedUsers() {
-        return rejectedUsers;
+    public HashMap<String, Boolean> getMatchedUsers() {
+        return matchedUsers;
     }
 
-    public void setRejectedUsers(List<User> rejectedUsers) {
-        this.rejectedUsers = rejectedUsers;
+    public void addMatchedUsers(String key, boolean value) {
+        matchedUsers.put(key, value);
     }
 
-    public List<User> getAcceptedUsers() {
-        return acceptedUsers;
-    }
-
-    public void setAcceptedUsers(List<User> acceptedUsers) {
-        this.acceptedUsers = acceptedUsers;
-    }
-
-    public void addAcceptedUser(User user) {
-        this.acceptedUsers.add(user);
-    }
-
-    public void addRejectedUser(User user) {
-        this.rejectedUsers.add(user);
-    }
-
-    public void removeAcceptedUser(User user) {
-        this.acceptedUsers.remove(user);
-    }
 
 }
 

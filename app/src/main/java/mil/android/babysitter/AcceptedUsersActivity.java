@@ -31,8 +31,8 @@ public class AcceptedUsersActivity extends AppCompatActivity {
     }
 
     public void initUsers(final RecyclerView recyclerView) {
-        final List<User> acceptedUsers = MainActivity.CURR_USER.getAcceptedUsers();
-        TextView tvNamesAccepted = findViewById(R.id.tvNamesAccepted);
+        //final List<String> acceptedUsers = MainActivity.CURR_USER.getAcceptedUsers();
+        //TextView tvNamesAccepted = findViewById(R.id.tvNamesAccepted);
 
         /*try {
             String names = "";
@@ -47,6 +47,10 @@ public class AcceptedUsersActivity extends AppCompatActivity {
         }
         */
 
+        //we need to get all these values from FIREBASE
+
+
+        /*
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -58,5 +62,6 @@ public class AcceptedUsersActivity extends AppCompatActivity {
                 touchHelper.attachToRecyclerView(recyclerView);
             }
         });
+        */
     }
 }
