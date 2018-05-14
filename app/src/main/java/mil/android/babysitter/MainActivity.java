@@ -108,9 +108,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         String key = dataSnapshot.getKey();
+
                         boolean val = (boolean) dataSnapshot.getValue();
                         userToAdd.addMatchedUsers(key, val);
                         Log.d("HALP", "addMatchedUsers: " + key);
+                        Log.d("HALP", "addMatchedUsers: " + val);
                     }
 
                     @Override

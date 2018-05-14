@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User implements Serializable {
 
@@ -14,7 +15,7 @@ public class User implements Serializable {
     private String imageUrl;
     private String phoneNumber;
     private boolean babysitter;
-    private HashMap<String, Boolean> matchedUsers;
+    private Map<String, Boolean> matchedUsers;
 
 
     public User(String uid, String name, String email, String phoneNumber, boolean babysitter) {
@@ -23,6 +24,10 @@ public class User implements Serializable {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.babysitter = babysitter;
+        this.matchedUsers = new HashMap<String, Boolean>();
+    }
+
+    public User(){
         this.matchedUsers = new HashMap<String, Boolean>();
     }
 
@@ -82,14 +87,13 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public HashMap<String, Boolean> getMatchedUsers() {
+    public Map<String, Boolean> getMatchedUsers() {
         return matchedUsers;
     }
 
     public void addMatchedUsers(String key, boolean value) {
         matchedUsers.put(key, value);
     }
-
 
 }
 

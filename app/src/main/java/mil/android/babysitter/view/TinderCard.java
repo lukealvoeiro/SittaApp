@@ -55,12 +55,10 @@ public class TinderCard {
     private void onSwipedOut(){
         Log.d("REJECTED", MainActivity.CURR_USER.getUid());
         Log.d("REJECTED", mProfile.getName());
-        //mSwipeView.addView(this);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         ref.child("user").child(MainActivity.CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(false);
-
     }
 
     @SwipeCancelState
@@ -70,7 +68,12 @@ public class TinderCard {
 
     @SwipeIn
     private void onSwipeIn(){
-        Log.d("ACCEPTED", mProfile.getName());
+        Log.d("REJECTED", MainActivity.CURR_USER.getUid());
+        Log.d("REJECTED", mProfile.getName());
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        ref.child("user").child(MainActivity.CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(true);
     }
 
     @SwipeInState
