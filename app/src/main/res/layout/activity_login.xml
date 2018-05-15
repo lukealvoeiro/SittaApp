@@ -35,7 +35,6 @@
             android:textColorHint="#ffffff"
             android:layout_marginBottom="16dp"
             android:layout_marginHorizontal="25dp"
-            android:text="sitta1@gmail.com"
             android:background="@drawable/layout_bg_entryfields"
             />
 
@@ -55,7 +54,6 @@
             android:textColorHint="#ffffff"
             android:layout_marginBottom="16dp"
             android:layout_marginHorizontal="25dp"
-            android:text="123456"
             android:background="@drawable/layout_bg_entryfields"
 
             />

@@ -33,8 +33,10 @@
         <activity
             android:name=".AttachPictureActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UserChatActivity" />
-        <activity android:name=".AcceptedUsersActivity"></activity>
+        <activity android:name=".UserChatActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".AcceptedUsersActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
