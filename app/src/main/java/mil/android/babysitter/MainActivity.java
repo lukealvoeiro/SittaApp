@@ -110,12 +110,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         String key = dataSnapshot.getKey();
-
                         boolean val = (boolean) dataSnapshot.getValue();
+
                         userToAdd.addMatchedUsers(key, val);
-                        Log.d("HALP", "addMatchedUsers: " + key);
-                        Log.d("HALP", "addMatchedUsers: " + val);
-                        Log.d("HALP", String.valueOf(userToAdd.getMatchedUsers().get(key)));
                     }
 
                     @Override
@@ -142,17 +139,15 @@ public class MainActivity extends AppCompatActivity {
                 if (!userFound) {
                     if (!userToAdd.getUid().equals(uidCurr)) {
                         listUsers.add(userToAdd);
-                        mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                     } else {
                         CURR_USER = userToAdd;
-                        //Log.d("REJECTED", "onChildAdded: " + CURR_USER.getName());
                         userFound = true;
-
                         pruneList();
                     }
                 } else {
-                    listUsers.add(userToAdd);
-                    mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
+                    if(CURR_USER.getMatchedUsers().get(userToAdd.getUid()) != null){
+                        mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
+                    }
                 }
             }
 
@@ -180,14 +175,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void pruneList(){
         Map<String, Boolean> pruner = CURR_USER.getMatchedUsers();
-        CURR_USER.getMatchedUsers();
-        Log.d("HALP", String.valueOf(pruner.get("FIoljLKLZidq4nKMBWiwSd7nOSb2")));
         for (int i = 0; i < listUsers.size(); i++) {
             String idToCompare = listUsers.get(i).getUid();
 
             Boolean value = pruner.get(idToCompare);
-            if (value == null) {
-                Log.d("HALP", "pruneList: dude");
+            if (value != null) {
+                mSwipeView.addView(new TinderCard(mContext, listUsers.get(i), mSwipeView));
             }
         }
     }
