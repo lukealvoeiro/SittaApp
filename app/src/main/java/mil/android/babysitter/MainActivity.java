@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
 
         populateListUsers();
-        pruneList();
+
 
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
@@ -147,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
                         CURR_USER = userToAdd;
                         //Log.d("REJECTED", "onChildAdded: " + CURR_USER.getName());
                         userFound = true;
+
+                        pruneList();
                     }
                 } else {
                     listUsers.add(userToAdd);

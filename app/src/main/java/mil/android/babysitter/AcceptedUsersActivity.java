@@ -43,12 +43,53 @@ public class AcceptedUsersActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerViewUsers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        initValueMap();
+        valueMap = new HashMap<String, Boolean>();
+        matchedIds = new ArrayList<String>();
+
+        initUsers();
+
+        //initValueMap();
         //initMatchedIds();
         //populateAcceptedUsers();
         //initUsers(recyclerView);
-        valueMap = new HashMap<String, Boolean>();
-        matchedIds = new ArrayList<String>();
+    }
+
+
+    public void initUsers() {
+
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().
+                child("user");
+
+
+
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String key = dataSnapshot.getKey();
+                User user = dataSnapshot.getValue(User.class);
+                Log.d("tag", user.toString());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void initValueMap() {
