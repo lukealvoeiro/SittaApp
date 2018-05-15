@@ -25,6 +25,8 @@ import mil.android.babysitter.MainActivity;
 import mil.android.babysitter.R;
 import mil.android.babysitter.data.User;
 
+import static mil.android.babysitter.MainActivity.CURR_USER;
+
 @Layout(R.layout.tinder_card_view)
 public class TinderCard {
 
@@ -53,12 +55,14 @@ public class TinderCard {
 
     @SwipeOut
     private void onSwipedOut(){
-        Log.d("REJECTED", MainActivity.CURR_USER.getUid());
+        Log.d("REJECTED", CURR_USER.getUid());
         Log.d("REJECTED", mProfile.getName());
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
-        ref.child("user").child(MainActivity.CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(false);
+        ref.child("user").child(CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(false);
+
+        CURR_USER.addMatchedUsers(mProfile.getUid(), false);
     }
 
     @SwipeCancelState
@@ -68,12 +72,13 @@ public class TinderCard {
 
     @SwipeIn
     private void onSwipeIn(){
-        Log.d("REJECTED", MainActivity.CURR_USER.getUid());
-        Log.d("REJECTED", mProfile.getName());
+        Log.d("ACCEPTED", CURR_USER.getUid());
+        Log.d("ACCEPTED", mProfile.getName());
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
-        ref.child("user").child(MainActivity.CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(true);
+        ref.child("user").child(CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(true);
+        CURR_USER.addMatchedUsers(mProfile.getUid(), true);
     }
 
     @SwipeInState

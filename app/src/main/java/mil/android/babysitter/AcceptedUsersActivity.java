@@ -59,9 +59,6 @@ public class AcceptedUsersActivity extends AppCompatActivity {
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().
                 child("user");
-
-
-
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
