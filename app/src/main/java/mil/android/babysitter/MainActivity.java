@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mSwipeView = (SwipePlaceHolderView) findViewById(R.id.swipeView);
         mContext = getApplicationContext();
 
-        populateListUsers();
+
 
 
         mSwipeView.getBuilder()
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                         .setRelativeScale(0.01f)
                         .setSwipeInMsgLayoutId(R.layout.tinder_swipe_in_msg_view)
                         .setSwipeOutMsgLayoutId(R.layout.tinder_swipe_out_msg_view));
+
 
 
         findViewById(R.id.matchesBtn).setOnClickListener(new View.OnClickListener() {
@@ -94,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
                 mSwipeView.doSwipe(true);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateListUsers();
     }
 
     public void populateListUsers() {
