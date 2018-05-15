@@ -20,8 +20,10 @@ import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import mil.android.babysitter.adapter.CardViewAdapter;
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     public static User CURR_USER;
 
     private List<User> listUsers;
-    private UserAdapter userAdapter;
 
     private String uidCurr;
     private boolean userFound;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
 
         populateListUsers();
+        pruneList();
 
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         userToAdd.addMatchedUsers(key, val);
                         Log.d("HALP", "addMatchedUsers: " + key);
                         Log.d("HALP", "addMatchedUsers: " + val);
+                        Log.d("HALP", String.valueOf(userToAdd.getMatchedUsers().get(key)));
                     }
 
                     @Override
@@ -136,17 +139,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                Log.d("User-properties", userToAdd.getEmail());
-                Log.d("User-properties", String.valueOf(userToAdd.isBabysitter()));
-                Log.d("User-properties", "");
-
                 if (!userFound) {
                     if (!userToAdd.getUid().equals(uidCurr)) {
                         listUsers.add(userToAdd);
                         mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
                     } else {
                         CURR_USER = userToAdd;
-                        Log.d("REJECTED", "onChildAdded: " + CURR_USER.getName());
+                        //Log.d("REJECTED", "onChildAdded: " + CURR_USER.getName());
                         userFound = true;
                     }
                 } else {
@@ -177,4 +176,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void pruneList(){
+        Map<String, Boolean> pruner = CURR_USER.getMatchedUsers();
+        CURR_USER.getMatchedUsers();
+        Log.d("HALP", String.valueOf(pruner.get("FIoljLKLZidq4nKMBWiwSd7nOSb2")));
+        for (int i = 0; i < listUsers.size(); i++) {
+            String idToCompare = listUsers.get(i).getUid();
+
+            Boolean value = pruner.get(idToCompare);
+            if (value == null) {
+                Log.d("HALP", "pruneList: dude");
+            }
+        }
+    }
 }
