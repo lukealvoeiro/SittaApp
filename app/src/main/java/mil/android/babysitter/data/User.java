@@ -18,13 +18,14 @@ public class User implements Serializable {
     private Map<String, Boolean> matchedUsers;
 
 
-    public User(String uid, String name, String email, String phoneNumber, boolean babysitter) {
+    public User(String uid, String name, String email, String phoneNumber, boolean babysitter, String bio) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.babysitter = babysitter;
         this.matchedUsers = new HashMap<String, Boolean>();
+        this.bio = bio;
     }
 
     public User(){

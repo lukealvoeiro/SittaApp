@@ -21,6 +21,7 @@ public class ChooseRoleActivity extends AppCompatActivity {
     private String password;
     private String name;
     private String phoneNumber;
+    private String bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class ChooseRoleActivity extends AppCompatActivity {
         password = getIntent().getExtras().getString("Password");
         name = getIntent().getExtras().getString("Name");
         phoneNumber = getIntent().getExtras().getString("PhoneNumber");
+        bio = getIntent().getExtras().getString("Bio");
 
         ButterKnife.bind(this);
     }
@@ -46,6 +48,7 @@ public class ChooseRoleActivity extends AppCompatActivity {
         extras.putString("Name", name);
         extras.putString("PhoneNumber", phoneNumber);
         extras.putBoolean("Babysitter", true);
+        extras.putString("Bio", bio);
 
         intent.putExtras(extras);
         startActivity(intent);
@@ -61,6 +64,7 @@ public class ChooseRoleActivity extends AppCompatActivity {
         extras.putString("Name", name);
         extras.putString("PhoneNumber", phoneNumber);
         extras.putBoolean("Babysitter", false);
+        extras.putString("Bio", bio);
 
         intent.putExtras(extras);
         startActivity(intent);

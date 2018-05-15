@@ -53,6 +53,7 @@ public class AttachPictureActivity extends AppCompatActivity {
     private String name;
     private String phoneNumber;
     private boolean babysitter;
+    private String bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class AttachPictureActivity extends AppCompatActivity {
         name = getIntent().getExtras().getString("Name");
         phoneNumber = getIntent().getExtras().getString("PhoneNumber");
         babysitter = getIntent().getExtras().getBoolean("Babysitter");
+        bio = getIntent().getExtras().getString("Bio");
 
         imgChanged = false;
 
@@ -108,8 +110,7 @@ public class AttachPictureActivity extends AppCompatActivity {
 
                     final String userId = fbUser.getUid();
 
-                    //String key = FirebaseDatabase.getInstance().getReference().child("user").push().getKey();
-                    User newUser = new User(userId, name, email, phoneNumber, babysitter);
+                    User newUser = new User(userId, name, email, phoneNumber, babysitter, bio);
 
                     newUser.setImageUrl(imageUrl);
 

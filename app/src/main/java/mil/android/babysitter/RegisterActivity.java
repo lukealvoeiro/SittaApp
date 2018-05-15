@@ -38,8 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.etRegisterPassword)
     EditText etRegisterPassword;
 
-    private ProgressDialog progressDialog;
-    FirebaseAuth firebaseAuth = null;
+    @BindView(R.id.etRegisterBio)
+    EditText etRegisterBio;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         extras.putString("Password", etRegisterPassword.getText().toString());
         extras.putString("Name", etRegisterName.getText().toString());
         extras.putString("PhoneNumber", etRegisterPhoneNumber.getText().toString());
+        extras.putString("Bio", etRegisterBio.getText().toString());
         intent.putExtras(extras);
         startActivity(intent);
     }
@@ -87,6 +89,12 @@ public class RegisterActivity extends AppCompatActivity {
             etRegisterPassword.setError("Required");
             return false;
         }
+
+        if (TextUtils.isEmpty(etRegisterBio.getText())) {
+            etRegisterBio.setError("Required");
+            return false;
+        }
+
 
         return true;
     }
