@@ -19,6 +19,7 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import mil.android.babysitter.MainActivity;
@@ -78,6 +79,14 @@ public class TinderCard {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         ref.child("user").child(CURR_USER.getUid()).child("match").child(mProfile.getUid()).setValue(true);
+
+        Map<String, Boolean> checkerMap = mProfile.getMatchedUsers();
+        Boolean matchQuestion = checkerMap.get(CURR_USER.getUid());
+        if(matchQuestion){
+            ref.child("match").child(CURR_USER.getUid()).child(mProfile.getUid()).setValue(mProfile);
+            ref.child("match").child(mProfile.getUid()).child(CURR_USER.getUid()).setValue(CURR_USER);
+        }
+
         CURR_USER.addMatchedUsers(mProfile.getUid(), true);
     }
 
