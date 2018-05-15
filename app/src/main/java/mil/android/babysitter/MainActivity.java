@@ -2,11 +2,13 @@ package mil.android.babysitter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mSwipeView = (SwipePlaceHolderView) findViewById(R.id.swipeView);
         mContext = getApplicationContext();
 
+        populateListUsers();
 
 
 
@@ -97,15 +100,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        populateListUsers();
-    }
 
     public void populateListUsers() {
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("user");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(mContext, "Listusers "+listUsers.size(), Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < listUsers.size(); i++) {
+                            if(listUsers.get(i).getUid().equals(uidCurr)){
+                                CURR_USER = listUsers.get(i);
+                                listUsers.remove(CURR_USER);
+                            }
+                        }
+                        pruneList();
+                    }
+                }, 1000);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         ref.addChildEventListener(new ChildEventListener() {
             @Override
@@ -120,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         boolean val = (boolean) dataSnapshot.getValue();
 
                         userToAdd.addMatchedUsers(key, val);
+                        Toast.makeText(MainActivity.this, "MATCH", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -143,19 +166,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                if (!userFound) {
-                    if (!userToAdd.getUid().equals(uidCurr)) {
-                        listUsers.add(userToAdd);
-                    } else {
-                        CURR_USER = userToAdd;
-                        userFound = true;
-                        pruneList();
-                    }
-                } else {
-                    if(CURR_USER.getMatchedUsers().get(userToAdd.getUid()) != null){
-                        mSwipeView.addView(new TinderCard(mContext, userToAdd, mSwipeView));
-                    }
-                }
+                listUsers.add(userToAdd);
+
             }
 
             @Override
@@ -184,10 +196,13 @@ public class MainActivity extends AppCompatActivity {
         Map<String, Boolean> pruner = CURR_USER.getMatchedUsers();
         for (int i = 0; i < listUsers.size(); i++) {
             String idToCompare = listUsers.get(i).getUid();
+            boolean sitterOrNah = listUsers.get(i).isBabysitter();
 
             Boolean value = pruner.get(idToCompare);
-            if (value != null) {
-                mSwipeView.addView(new TinderCard(mContext, listUsers.get(i), mSwipeView));
+            if (value == null) {
+                if (sitterOrNah != CURR_USER.isBabysitter()){
+                    mSwipeView.addView(new TinderCard(mContext, listUsers.get(i), mSwipeView));
+                }
             }
         }
     }
