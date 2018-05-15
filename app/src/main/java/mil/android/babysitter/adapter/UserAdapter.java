@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
 
         viewHolder.tvName.setText(user.getName());
         viewHolder.tvBiography.setText(user.getBio());
-        //DO NOT FORGET TO SET PROFILE IMAGE!
+        Glide.with(context).load(user.getImageUrl()).into(viewHolder.profileImg);
 
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
