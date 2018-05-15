@@ -29,10 +29,7 @@ import mil.android.babysitter.touch.ProfileTouchHelperCallback;
 public class AcceptedUsersActivity extends AppCompatActivity {
 
     private UserAdapter userAdapter;
-    Map<String, Boolean> valueMap;
-    Set<Map.Entry<String, Boolean>> setMatches;
     List<User> acceptedUsers;
-    List<String> matchedIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,28 +40,22 @@ public class AcceptedUsersActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerViewUsers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        valueMap = new HashMap<String, Boolean>();
-        matchedIds = new ArrayList<String>();
+        acceptedUsers = new ArrayList<User>();
 
-        initUsers();
-
-        //initValueMap();
-        //initMatchedIds();
-        //populateAcceptedUsers();
-        //initUsers(recyclerView);
+        populateAcceptedUsers();
+        initUsers(recyclerView);
     }
 
-
-    public void initUsers() {
-
+    public void populateAcceptedUsers(){
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().
-                child("user");
+                child("match").child(MainActivity.CURR_USER.getUid());
+
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String key = dataSnapshot.getKey();
-                User user = dataSnapshot.getValue(User.class);
-                Log.d("tag", user.toString());
+                final User userToAdd = dataSnapshot.getValue(User.class);
+                acceptedUsers.add(userToAdd);
+                Log.d("USER_ADDED", "onChildAdded: " + userToAdd.getUid());
             }
 
             @Override
@@ -87,103 +78,6 @@ public class AcceptedUsersActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public void initValueMap() {
-
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().
-                child("user").child(MainActivity.CURR_USER.getUid()).child("match");
-
-        ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String key = dataSnapshot.getKey();
-                boolean val = (boolean) dataSnapshot.getValue();
-                Log.d("VALUE_MAP", "onDataChange: "+ key + " " + val);
-                valueMap.put(key, val);
-                Log.d("VALUE_MAP2", "onChildAdded: "+ valueMap.get(key));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void initMatchedIds() {
-        setMatches = valueMap.entrySet();
-        for (final Map.Entry<String, Boolean> entry: setMatches) {
-            final DatabaseReference queryRef = FirebaseDatabase.getInstance().getReference().
-                    child("user").child(entry.getKey()).child("match").child(entry.getKey());
-
-
-            queryRef.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    boolean match = (boolean) dataSnapshot.getValue();
-                    if(match == true){
-                        matchedIds.add(dataSnapshot.getKey());
-                    }
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
-
-    public void populateAcceptedUsers() {
-        for (int i = 0; i < matchedIds.size(); i++) {
-            String curr = matchedIds.get(i);
-
-            DatabaseReference matchingQueryRef = FirebaseDatabase.getInstance().getReference().
-                    child("user").child(curr);
-            matchingQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    final User userToAdd = dataSnapshot.getValue(User.class);
-                    acceptedUsers.add(userToAdd);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
     }
 
     public void initUsers(final RecyclerView recyclerView) {
