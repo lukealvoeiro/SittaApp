@@ -1,11 +1,14 @@
 package mil.android.babysitter;
 
+import android.app.ProgressDialog;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,14 +25,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import butterknife.BindView;
 import mil.android.babysitter.adapter.UserAdapter;
 import mil.android.babysitter.data.User;
-import mil.android.babysitter.touch.ProfileTouchHelperCallback;
 
 public class AcceptedUsersActivity extends AppCompatActivity {
 
     private UserAdapter userAdapter;
     List<User> acceptedUsers;
+    private ProgressDialog progressDialog;
+
+    @BindView(R.id.errorMsg)
+    TextView errorMsg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +45,19 @@ public class AcceptedUsersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accepted_users);
 
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewUsers);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerViewUsers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         acceptedUsers = new ArrayList<User>();
 
         populateAcceptedUsers();
-        initUsers(recyclerView);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initUsers(recyclerView);
+            }
+        },300);
     }
 
     public void populateAcceptedUsers(){
@@ -81,16 +95,23 @@ public class AcceptedUsersActivity extends AppCompatActivity {
     }
 
     public void initUsers(final RecyclerView recyclerView) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                userAdapter = new UserAdapter(acceptedUsers, AcceptedUsersActivity.this);
-                recyclerView.setAdapter(userAdapter);
-
-                ItemTouchHelper.Callback callback = new ProfileTouchHelperCallback(userAdapter);
-                ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-                touchHelper.attachToRecyclerView(recyclerView);
-            }
-        });
+        userAdapter = new UserAdapter(acceptedUsers, AcceptedUsersActivity.this);
+        recyclerView.setAdapter(userAdapter);
     }
+
+    public void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Loading...");
+        }
+
+        progressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
 }

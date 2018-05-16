@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="12dp"
     tools:context="mil.android.babysitter.AcceptedUsersActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:src="@drawable/sitta"
+        android:layout_alignParentTop="true"
+        android:layout_margin="9dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tvNamesAccepted"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:text="Matches:"
+        android:textColor="#1d1d1d"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/errorMsg"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have no matches to display"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewUsers"
@@ -12,10 +39,5 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <TextView
-        android:id="@+id/tvNamesAccepted"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

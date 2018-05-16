@@ -7,6 +7,12 @@
     tools:context=".MainActivity"
     android:background="#efefef">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No potential matches to display"
+        android:layout_centerInParent="true"/>
+
     <ImageView
         android:id="@+id/ivSettings"
         android:layout_width="40dp"
@@ -15,6 +21,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_margin="9dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:src="@drawable/sitta_darker"
+        android:layout_alignParentTop="true"
+        android:layout_margin="9dp"
+        android:layout_centerHorizontal="true"/>
 
     <ImageButton
         android:id="@+id/matchesBtn"

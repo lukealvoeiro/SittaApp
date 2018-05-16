@@ -1,47 +1,44 @@
 package mil.android.babysitter.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
-import java.util.Collections;
 import java.util.List;
 
-import mil.android.babysitter.MainActivity;
 import mil.android.babysitter.R;
-import mil.android.babysitter.UserChatActivity;
 import mil.android.babysitter.data.User;
-import mil.android.babysitter.touch.ProfileTouchHelperAdapter;
 
-/**
- * Created by madina on 5/13/18.
- */
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> implements ProfileTouchHelperAdapter {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         public ImageView profileImg;
         public TextView tvName;
-        public TextView tvBiography;
-        public Button btnDelete;
+        public TextView tvPhoneNumber;
+        public ImageView ivBio;
+        public TextView tvBio;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            profileImg = (ImageView) itemView.findViewById(R.id.profileImg);
-            tvName = (TextView) itemView.findViewById(R.id.tvName);
-            tvBiography = (TextView) itemView.findViewById(R.id.tvBiography);
-            btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
+            profileImg = itemView.findViewById(R.id.profileImg);
+            tvName = itemView.findViewById(R.id.tvName);
+            tvPhoneNumber = itemView.findViewById(R.id.tvPhoneNumber);
+            ivBio = itemView.findViewById(R.id.ivBio);
+            tvBio = itemView.findViewById(R.id.tvBio);
         }
     }
 
@@ -59,24 +56,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         final User user = usersList.get(position);
 
         viewHolder.tvName.setText(user.getName());
-        viewHolder.tvBiography.setText(user.getBio());
-        Glide.with(context).load(user.getImageUrl()).into(viewHolder.profileImg);
+        viewHolder.tvPhoneNumber.append(user.getPhoneNumber());
+        viewHolder.tvBio.append(user.getBio());
+        viewHolder.ivBio.setImageResource(R.drawable.ic_info);
 
-        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+        Glide.with(context).load(user.getImageUrl()).asBitmap().centerCrop().into(new BitmapImageViewTarget(viewHolder.profileImg) {
             @Override
-            public void onClick(View v) {
-                onItemDismiss(viewHolder.getAdapterPosition());
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                viewHolder.profileImg.setImageDrawable(circularBitmapDrawable);
             }
         });
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ivBio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UserChatActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("user", user);
-                intent.putExtras(b);
-                context.startActivity(intent);
+                viewHolder.tvBio.setVisibility(View.VISIBLE);
             }
         });
 
@@ -104,25 +101,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         }
     }
 
-    @Override
-    public void onItemDismiss(int position) {
-        final User userToDelete = usersList.get(position);
-        usersList.remove(userToDelete);
-        notifyItemRemoved(position);
-        //MainActivity.CURR_USER.removeAcceptedUser(userToDelete);
+    public List<User> getUsersList() {
+        return usersList;
     }
 
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(usersList, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(usersList, i, i - 1);
-            }
-        }
-        notifyItemMoved(fromPosition, toPosition);
-    }
 }
